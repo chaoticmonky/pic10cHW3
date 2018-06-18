@@ -59,12 +59,11 @@ public:
         
     public:
         reference operator*() {
-            if (offset + parent->begin_index > MAX_SIZE-1) return parent->buffer[offset + parent->begin_index - MAX_SIZE+1];
-            return parent->buffer[parent->begin_index + offset] ; //return the value of offset
+            return parent->buffer[(parent->begin_index + offset)%MAX_SIZE] ; //return the value of offset
         }
         
         iterator& operator++(){
-            if (this->offset != MAX_SIZE-1) ++(this->offset);//increase offset by 1
+            if (this->offset != MAX_SIZE) ++(this->offset);//increase offset by 1
             else this->offset = 0;
             return *this;
         }
