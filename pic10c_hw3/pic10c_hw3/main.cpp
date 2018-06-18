@@ -59,8 +59,8 @@ public:
         
     public:
         reference operator*() {
-//            if (offset + begin_index)
-            return parent->buffer[offset] ; //return the value of offset
+            if (offset + parent->begin_index > MAX_SIZE-1) return parent->buffer[offset + parent->begin_index - MAX_SIZE+1];
+            return parent->buffer[parent->begin_index + offset] ; //return the value of offset
         }
         
         iterator& operator++(){
@@ -164,11 +164,24 @@ public:
     
     
     // Mutators
-    void push_back( const ItemType& value ){
-        return;
+    void push_back( const ItemType& value )
+    {
+        if (begin_index != end_index())
+        {
+            buffer[end_index()] = value;
+            ++ring_size;
+        }
+        else
+        {
+            buffer[end_index()] = value;
+            (begin_index != MAX_SIZE -1)? begin_index++: begin_index = 0;
+        }
     }
-    void pop_front(){
-        return;
+    
+    void pop_front()
+    {
+        (begin_index != MAX_SIZE -1)? begin_index++: begin_index = 0;
+        --ring_size;
     }
     
     // Functions that return iterators
@@ -224,13 +237,13 @@ int main(){
     // implementation of RingQueue<ItemType,int>::end().
     // If the implementation is not correct, it might result in
     // an infinite loop.
-    /**
-     std::cout << "Queue via iterators: \n";
-     for ( auto it = rq.begin() ; it != rq.end() ; ++it ) {
-     std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
-     }
-     std::cout << '\n';
-     */
+    
+//     std::cout << "Queue via iterators: \n";
+//     for ( auto it = rq.begin() ; it != rq.end() ; ++it ) {
+//     std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
+//     }
+//     std::cout << '\n';
+    
     
     
     
