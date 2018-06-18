@@ -59,12 +59,13 @@ public:
         
     public:
         reference operator*() {
-            
+//            if (offset + begin_index)
             return parent->buffer[offset] ; //return the value of offset
         }
         
         iterator& operator++(){
-            ++(this->offset);//increase offset by 1
+            if (this->offset != MAX_SIZE-1) ++(this->offset);//increase offset by 1
+            else this->offset = 0;
             return *this;
         }
         
@@ -148,7 +149,7 @@ public:
         
         
         // Replace the line(s) below with your code.
-        return buffer[0];
+        return buffer[begin_index];
     }
     ItemType back() const {
         if ( ring_size == 0 ) std::cerr<< "Warning: Empty ring!\n" ;
@@ -157,7 +158,7 @@ public:
         
         
         // Replace the line(s) below with your code.
-        return buffer[0];
+        return (end_index()!= 0)? buffer[end_index()-1] : buffer[MAX_SIZE-1];
     }
     
     
@@ -173,17 +174,17 @@ public:
     // Functions that return iterators
     iterator begin() {
         // Replace the line(s) below with your code.
-        return iterator(this,0);
+        return iterator(this,front());
     }
     iterator end() {
         // Replace the line(s) below with your code.
-        return iterator(this,0);
+        return iterator(this,back());
     }
     
     // Miscellaneous functions
     size_t size() const {
         // Replace the line(s) below with your code.
-        return 0;
+        return MAX_SIZE;
     }
     
     // Debugging functions
